@@ -1,0 +1,68 @@
+# Diretórios comuns
+/vendor/
+node_modules/
+bower_components/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Arquivos de ambiente e config
+.env
+.env.*
+*.local.php
+*.log
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# Arquivos de sistema e cache
+*.lock
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.tar
+*.zip
+*.rar
+*.7z
+
+# Composer
+composer.lock
+composer.phar
+
+# NPM/Yarn/PHP builds
+package-lock.json
+yarn.lock
+
+# PHPStorm
+/.idea/
+/*.iml
+
+# Cache & Sessions
+cache/
+tmp/
+temp/
+logs/
+sessions/
+storage/
+
+# Sistemas específicos
+public_html/
+htdocs/
+
+# Arquivos de debug/teste
+phpunit.xml
+phpunit.xml.dist
+phpcs.xml
+phpcs.xml.dist
+coverage/
+test-results/
+
+# Mac & Windows
+ehthumbs.db
+Desktop.ini
+*.lnk
+*.url
