@@ -9,12 +9,10 @@ generateHeader($pageData);
 
 include(ROOT_URL . '/includes/functions.php');
 
-$cifra = file_get_contents(ROOT_URL . "/cifras/É Tudo Sobre Você - Morada.txt");
+$cifra = file_get_contents(ROOT_URL . "/cifras/Só Tu És Santo - Uma Coisa - Deixa Queimar - Quando Ele Vem (Pot-Pourri).txt");
 $data = extractCifraMetadata($cifra);
 $info = $data['metadata'];
 $html = parseCifraText($data['body']);
-
-
 ?>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -124,16 +122,25 @@ $html = parseCifraText($data['body']);
 
   .metadata {
     font-size: 13px;
-    color: #333;
+    color: rgb(127, 140, 170);
+  }
+
+  .musicTitle {
+    font-size: 28px;
+  }
+
+  .artistaSubTitle {
+    font-size: 18px;
   }
 </style>
 
 <main class="container">
-  <h1><?= str_replace(": ", "", $info['titulo']) ?></h1>
-
   <div class="metadata">
-    <strong>Tom:</strong> <span id="meta-tom">D</span> | <strong>Artista:</strong> <?= $info['artista'] ?> | <strong>BPM:</strong> <?= $info['bpm'] ?> | <strong>Afinação:</strong> <?= $info['afinacao'] ?>
+    <strong>Tom:</strong> <span id="meta-tom"><?=$info['tom']?></span> | <strong>BPM:</strong> <?= $info['bpm'] ?> | <strong>Afinação:</strong> <?= $info['afinacao'] ?>
   </div>
+
+  <h1 class="musicTitle"><?= str_replace(": ", "", $info['titulo']) ?></h1>
+  <p class="artistaSubTitle"><?= $info['artista'] ?></p>
 
   <br>
 

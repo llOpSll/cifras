@@ -14,7 +14,7 @@ function noteIndex(note) {
 }
 
 function transposeChord(chordText, semitones) {
-  var regex = /^([A-G][b#]?)(.*?)(?:\/(\S+))?$/;
+  var regex = /^([A-G][b#]?)([^\s\/]*)(?:\/([A-G][b#]?))?$/;
   var m = chordText.match(regex);
   if (!m) return chordText;
   var root = m[1], quality = m[2], bass = m[3];
@@ -54,10 +54,12 @@ function updateTransposition(semitones) {
       el2.textContent = nf;
     }
   }
+}
 
+function updateDisplayedKey(originalKey, userTranspose) {
   var tomElement = document.getElementById('current-tom');
-  if (tomElement && tomElement.getAttribute('data-original-tom')) {
-    tomElement.textContent = transposeChord(tomElement.getAttribute('data-original-tom'), semitones);
+  if (tomElement && originalKey) {
+    tomElement.textContent = transposeChord(originalKey, userTranspose);
   }
 }
 
@@ -84,8 +86,9 @@ function resetTransposition() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  var transposition = 0;
-  var capo = 0;
+  var userTranspose = 0;  // transposição do usuário
+  var capo = 0;           // valor do capotraste
+  var originalKey = null;
 
   var chords = document.querySelectorAll('.chord strong');
   for (var i = 0; i < chords.length; i++) {
@@ -98,17 +101,21 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   var tomEl = document.getElementById('current-tom');
-  if (tomEl) tomEl.setAttribute('data-original-tom', tomEl.textContent);
+  if (tomEl) {
+    originalKey = tomEl.textContent.trim();
+    tomEl.setAttribute('data-original-tom', originalKey);
+  }
 
   function applyChanges() {
-    var total = transposition + capo;
-    updateTransposition(total);
+    var totalSemitones = userTranspose - capo;  // transposição final aplicada nos acordes
+    updateTransposition(totalSemitones);
+    updateDisplayedKey(originalKey, userTranspose); // tom exibido considera só a transposição do usuário
   }
 
   var btnUp = document.getElementById('transpose-up');
   if (btnUp) {
     btnUp.addEventListener('click', function () {
-      transposition = (transposition + 1) % 12;
+      userTranspose = (userTranspose + 1) % 12;
       applyChanges();
     });
   }
@@ -116,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var btnDown = document.getElementById('transpose-down');
   if (btnDown) {
     btnDown.addEventListener('click', function () {
-      transposition = (transposition - 1 + 12) % 12;
+      userTranspose = (userTranspose - 1 + 12) % 12;
       applyChanges();
     });
   }
@@ -124,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var btnReset = document.getElementById('transpose-reset');
   if (btnReset) {
     btnReset.addEventListener('click', function () {
-      transposition = 0;
+      userTranspose = 0;
       var capoSelect = document.getElementById('capo-select');
       if (capoSelect) {
         capo = parseInt(capoSelect.getAttribute('data-original-capo') || '0', 10);
@@ -138,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var capoSelect = document.getElementById('capo-select');
   if (capoSelect) {
     capoSelect.setAttribute('data-original-capo', capoSelect.value);
+    capo = parseInt(capoSelect.value, 10) || 0;
     capoSelect.addEventListener('change', function () {
       capo = parseInt(this.value, 10) || 0;
       applyChanges();
@@ -163,43 +171,41 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  var mainElement = document.querySelector('main');
-var fullscreenBtn = document.getElementById('fullscreen-toggle');
-
-if (fullscreenBtn) {
-  fullscreenBtn.addEventListener('click', function () {
-    var docEl = document.documentElement;
-
-    if (
-      document.fullscreenElement ||
-      document.webkitFullscreenElement ||
-      document.mozFullScreenElement ||
-      document.msFullscreenElement
-    ) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      }
-    } else {
-      if (docEl.requestFullscreen) {
-        docEl.requestFullscreen();
-      } else if (docEl.webkitRequestFullscreen) {
-        docEl.webkitRequestFullscreen();
-      } else if (docEl.mozRequestFullScreen) {
-        docEl.mozRequestFullScreen();
-      } else if (docEl.msRequestFullscreen) {
-        docEl.msRequestFullscreen();
+  // Fullscreen toggle (deixa como está, mesmo com limitações)
+  var fullscreenBtn = document.getElementById('fullscreen-toggle');
+  if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', function () {
+      var docEl = document.documentElement;
+      if (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      ) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
       } else {
-        alert("Seu navegador não suporta fullscreen.");
+        if (docEl.requestFullscreen) {
+          docEl.requestFullscreen();
+        } else if (docEl.webkitRequestFullscreen) {
+          docEl.webkitRequestFullscreen();
+        } else if (docEl.mozRequestFullScreen) {
+          docEl.mozRequestFullScreen();
+        } else if (docEl.msRequestFullscreen) {
+          docEl.msRequestFullscreen();
+        } else {
+          alert("Seu navegador não suporta fullscreen.");
+        }
       }
-    }
-  });
-}
+    });
+  }
 
   applyChanges();
 });

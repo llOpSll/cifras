@@ -2,9 +2,14 @@
 
 function isChordToken(string $token): bool
 {
-  $pattern = '/^([A-G])([#b])?(?:maj|min|m|M|sus2?|add|dim|aug)?(?:[0-9]{1,2}(?:M|sus|add)?)*(?:\/[A-G][#b]?)?$/x';
-  return preg_match($pattern, $token) === 1;
+  // Remove inversão temporariamente (ex: C/E → C)
+  $parts = explode('/', $token);
+  $base = $parts[0];
+
+  // Regex mais permissivo e robusto
+  return preg_match('/^[A-G](#|b)?[a-zA-Z0-9()#b+º\-]*$/', $base);
 }
+
 
 function isTabLine(string $line): bool
 {
