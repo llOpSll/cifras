@@ -111,7 +111,7 @@ function updateChordDictionary() {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'http://192.168.0.70/cifras/ajax/getChordDiagram.php', true);
+  xhr.open('POST', 'http://192.168.0.70/cifras/includes/chord-diagrams.php', true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {

@@ -183,42 +183,16 @@ $html = parseCifraText($data['body']);
     <label for="capo-select" class="capo-select">Capotraste:</label>
     <select id="capo-select">
       <option value="0">Sem Capotraste</option>
-      <option value="1" <?php if ($info['capo'] == '1') {
-                          echo 'selected';
-                        } ?>>1ª Casa</option>
-      <option value="2" <?php if ($info['capo'] == '2') {
-                          echo 'selected';
-                        } ?>>2ª Casa</option>
-      <option value="3" <?php if ($info['capo'] == '3') {
-                          echo 'selected';
-                        } ?>>3ª Casa</option>
-      <option value="4" <?php if ($info['capo'] == '4') {
-                          echo 'selected';
-                        } ?>>4ª Casa</option>
-      <option value="5" <?php if ($info['capo'] == '5') {
-                          echo 'selected';
-                        } ?>>5ª Casa</option>
-      <option value="6" <?php if ($info['capo'] == '6') {
-                          echo 'selected';
-                        } ?>>6ª Casa</option>
-      <option value="7" <?php if ($info['capo'] == '7') {
-                          echo 'selected';
-                        } ?>>7ª Casa</option>
-      <option value="8" <?php if ($info['capo'] == '8') {
-                          echo 'selected';
-                        } ?>>8ª Casa</option>
-      <option value="9" <?php if ($info['capo'] == '9') {
-                          echo 'selected';
-                        } ?>>9ª Casa</option>
-      <option value="10" <?php if ($info['capo'] == '10') {
-                            echo 'selected';
-                          } ?>>10ª Casa</option>
-      <option value="11" <?php if ($info['capo'] == '11') {
-                            echo 'selected';
-                          } ?>>11ª Casa</option>
-      <option value="12" <?php if ($info['capo'] == '12') {
-                            echo 'selected';
-                          } ?>>12ª Casa</option>
+      <?php
+      for ($i = 1; $i < 13; $i++) {
+        if ($info['capo'] == $i) {
+          $sel = 'selected';
+        } else {
+          $sel = '';
+        }
+        echo '<option value="' . $i . '" '.$sel.'>' . $i . 'ª Casa</option>';
+      }
+      ?>
     </select>
 
     <div id="font-controls">

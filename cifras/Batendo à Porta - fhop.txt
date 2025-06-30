@@ -1,7 +1,7 @@
 Título: Batendo à Porta
 Artista: fhop
 Tom: C#m7
-Capotraste: 0
+Capotraste: 2
 BPM: 135
 Afinação: E A D G B e
 
@@ -163,7 +163,7 @@ Desperta a tua igreja que te ama
 Pra orar e clamar até o teu retorno
 
 ( C#m7  B2  F#m )
-( A9  C#m7  B2)
+( A9  C#m7  B2 )
 
 Ouuu estamos
 
