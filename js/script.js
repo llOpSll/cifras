@@ -1,4 +1,3 @@
-// script.js
 var NOTES_SHARP = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 var MAX_FRET = 24;
 var fontSize = 14;
@@ -85,9 +84,55 @@ function resetTransposition() {
   }
 }
 
+function getCurrentChords() {
+  var chordsEls = document.querySelectorAll('.chord strong');
+  var chordsSet = {};
+  for (var i = 0; i < chordsEls.length; i++) {
+    var txt = chordsEls[i].textContent.trim();
+    if (txt && !chordsSet[txt]) {
+      chordsSet[txt] = true;
+    }
+  }
+  var keys = [];
+  for (var k in chordsSet) {
+    keys.push(k);
+  }
+  return keys.sort();
+}
+
+function updateChordDictionary() {
+  var container = document.getElementById('dictionary-content');
+  if (!container) return;
+
+  var chords = getCurrentChords();
+  if (chords.length === 0) {
+    container.innerHTML = '<p>Nenhum acorde detectado.</p>';
+    return;
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'http://192.168.0.70/cifras/ajax/getChordDiagram.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      try {
+        var data = JSON.parse(xhr.responseText);
+        if (data && data.html) {
+          container.innerHTML = data.html;
+        } else {
+          container.innerHTML = '<p>Erro ao carregar acordes.</p>';
+        }
+      } catch (e) {
+        container.innerHTML = '<p>Erro ao interpretar resposta.</p>';
+      }
+    }
+  };
+  xhr.send(JSON.stringify(chords));
+}
+
 document.addEventListener('DOMContentLoaded', function () {
-  var userTranspose = 0;  // transposição do usuário
-  var capo = 0;           // valor do capotraste
+  var userTranspose = 0;
+  var capo = 0;
   var originalKey = null;
 
   var chords = document.querySelectorAll('.chord strong');
@@ -107,9 +152,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function applyChanges() {
-    var totalSemitones = userTranspose - capo;  // transposição final aplicada nos acordes
+    var totalSemitones = userTranspose - capo;
     updateTransposition(totalSemitones);
-    updateDisplayedKey(originalKey, userTranspose); // tom exibido considera só a transposição do usuário
+    updateDisplayedKey(originalKey, userTranspose);
+    updateChordDictionary();
   }
 
   var btnUp = document.getElementById('transpose-up');
@@ -171,38 +217,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Fullscreen toggle (deixa como está, mesmo com limitações)
   var fullscreenBtn = document.getElementById('fullscreen-toggle');
   if (fullscreenBtn) {
     fullscreenBtn.addEventListener('click', function () {
       var docEl = document.documentElement;
-      if (
-        document.fullscreenElement ||
-        document.webkitFullscreenElement ||
-        document.mozFullScreenElement ||
-        document.msFullscreenElement
-      ) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
+      var isFull = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+
+      if (isFull) {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
       } else {
-        if (docEl.requestFullscreen) {
-          docEl.requestFullscreen();
-        } else if (docEl.webkitRequestFullscreen) {
-          docEl.webkitRequestFullscreen();
-        } else if (docEl.mozRequestFullScreen) {
-          docEl.mozRequestFullScreen();
-        } else if (docEl.msRequestFullscreen) {
-          docEl.msRequestFullscreen();
-        } else {
-          alert("Seu navegador não suporta fullscreen.");
-        }
+        if (docEl.requestFullscreen) docEl.requestFullscreen();
+        else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
+        else if (docEl.mozRequestFullScreen) docEl.mozRequestFullScreen();
+        else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
+        else alert("Seu navegador não suporta fullscreen.");
       }
     });
   }

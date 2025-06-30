@@ -31,6 +31,10 @@ $html = parseCifraText($data['body']);
     box-sizing: border-box;
   }
 
+  :root {
+    --primary-color: rgb(184, 38, 94);
+  }
+
   html,
   body {
     font-family: "Poppins", sans-serif;
@@ -132,11 +136,34 @@ $html = parseCifraText($data['body']);
   .artistaSubTitle {
     font-size: 18px;
   }
+
+  .chord-diagram {
+    border: 0 !important;
+  }
+
+  .chord-diagram svg {
+    width: 70px;
+    height: 80px;
+    border: 0 !important;
+  }
+
+  .chord-diagram svg line {
+    stroke: #121214;
+  }
+
+  .chord-diagram svg text {
+    fill: #121214;
+  }
+
+  .chord-diagram svg circle {
+    fill: rgb(184, 38, 94);
+  }
 </style>
 
 <main class="container">
   <div class="metadata">
-    <strong>Tom:</strong> <span id="meta-tom"><?=$info['tom']?></span> | <strong>BPM:</strong> <?= $info['bpm'] ?> | <strong>Afinação:</strong> <?= $info['afinacao'] ?>
+    <strong>Tom:</strong> <span id="meta-tom"><?= $info['tom'] ?></span> | <strong>BPM:</strong> <?= $info['bpm'] ?> |
+    <strong>Afinação:</strong> <?= $info['afinacao'] ?>
   </div>
 
   <h1 class="musicTitle"><?= str_replace(": ", "", $info['titulo']) ?></h1>
@@ -208,6 +235,12 @@ $html = parseCifraText($data['body']);
     echo ($html);
     ?>
   </pre>
+
+  <div id="chord-dictionary" style="margin-top: 2em; padding-top: 1em; border-top: 1px solid #ccc;">
+    <h2>Dicionário de Acordes</h2>
+    <div id="dictionary-content" style="display: flex; flex-wrap: wrap; gap: 12px;"></div>
+  </div>
+
 </main>
 
 <script src="<?= BASE_URL ?>/js/script.js"></script>
