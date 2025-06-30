@@ -4,14 +4,16 @@ require_once '../includes/functions.php';
 
 function normalizeChordName(string $chord): string
 {
-  // if (strpos($chord, '/') !== false) {
-  //   $chord = explode('/', $chord)[0];
-  // }
   $chord = trim($chord);
   $chord = str_replace(' ', '', $chord);
-  preg_match('/^[A-G](#|b)?/i', $chord, $matches);
+
+  $parts = explode('/', $chord);
+  $mainChord = $parts[0];
+  $bassNote = $parts[1] ?? '';
+
+  preg_match('/^[A-G](#|b)?/i', $mainChord, $matches);
   $root = $matches[0] ?? '';
-  $suffix = substr($chord, strlen($root));
+  $suffix = substr($mainChord, strlen($root));
   $root = strtoupper($root[0]) . (isset($root[1]) ? strtolower($root[1]) : '');
 
   $map = [
@@ -44,7 +46,12 @@ function normalizeChordName(string $chord): string
     }
   }
 
-  return $root . $suffix;
+  $normalized = $root . $suffix;
+  if ($bassNote !== '') {
+    $normalized .= '/' . $bassNote;
+  }
+
+  return $normalized;
 }
 
 $input = file_get_contents('php://input');
