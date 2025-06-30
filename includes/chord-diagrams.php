@@ -7,15 +7,19 @@ function normalizeChordName(string $chord): string
   $chord = trim($chord);
   $chord = str_replace(' ', '', $chord);
 
+  // Separar baixo (ex: G/B)
   $parts = explode('/', $chord);
   $mainChord = $parts[0];
   $bassNote = $parts[1] ?? '';
 
+  // Normaliza a parte principal (raiz + sufixo)
   preg_match('/^[A-G](#|b)?/i', $mainChord, $matches);
   $root = $matches[0] ?? '';
   $suffix = substr($mainChord, strlen($root));
+
   $root = strtoupper($root[0]) . (isset($root[1]) ? strtolower($root[1]) : '');
 
+  // Substituições exatas do sufixo
   $map = [
     '7M' => 'maj7',
     'M7' => 'maj7',
@@ -40,10 +44,18 @@ function normalizeChordName(string $chord): string
     'add11' => 'add11',
   ];
 
+  // Normaliza o sufixo com múltiplas substituições possíveis
   foreach ($map as $pattern => $replacement) {
     if (stripos($suffix, $pattern) !== false) {
       $suffix = preg_replace('/' . preg_quote($pattern, '/') . '/i', $replacement, $suffix);
     }
+  }
+
+  // Normalizar baixo (se existir)
+  if ($bassNote !== '') {
+    preg_match('/^[A-G](#|b)?/i', $bassNote, $bassMatches);
+    $bassRoot = $bassMatches[0] ?? '';
+    $bassNote = strtoupper($bassRoot[0]) . (isset($bassRoot[1]) ? strtolower($bassRoot[1]) : '');
   }
 
   $normalized = $root . $suffix;
@@ -53,6 +65,7 @@ function normalizeChordName(string $chord): string
 
   return $normalized;
 }
+
 
 $input = file_get_contents('php://input');
 $chords = json_decode($input, true);
