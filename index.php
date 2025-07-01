@@ -37,14 +37,27 @@ function generateHeader($pageData = [])
     <meta name="twitter:title" content="<?php echo htmlspecialchars($pageData['title']); ?>">
     <meta name="twitter:description" content="<?php echo htmlspecialchars($pageData['description']); ?>">
     <meta name="twitter:image" content="<?php echo htmlspecialchars($pageData['og_image']); ?>">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/style.css">
   </head>
 
   <body>
-    <header>
-      <nav>
-        <a href="<?php echo BASE_URL; ?>">Home</a>
-      </nav>
+    <header class="container">
+      <div class="logo">
+        <a href="<?php echo BASE_URL; ?>"><img src="<?php echo BASE_URL; ?>/img/cifras-app.png"
+            style="max-width: 250px;"></a>
+      </div>
+
+      <a href="" class="menuItem repo"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-list sm:w-4 sm:h-4">
+          <path d="M3 12h.01"></path>
+          <path d="M3 18h.01"></path>
+          <path d="M3 6h.01"></path>
+          <path d="M8 12h13"></path>
+          <path d="M8 18h13"></path>
+          <path d="M8 6h13"></path>
+        </svg> Repertórios</a>&nbsp;
+      <a href="" class="menuItem cifra">+ Nova Cifra</a>
     </header>
   <?php
 }
@@ -105,3 +118,5 @@ function route($url)
 $current_url = $_SERVER['REQUEST_URI'];
 route($current_url);
 ?>
+
+<footer>© 2025 CifrasApp · Feito com amor 🎸</footer>

@@ -112,6 +112,9 @@ function renderDiagram(array $item, bool $highlight = false): void
     case 'major':
       $item['suffix'] = '';
       break;
+    case 'maj7':
+      $item['suffix'] = '7M';
+      break;
   }
 
   $key = $item['key'] . $item['suffix'];

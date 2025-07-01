@@ -245,5 +245,29 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  var capoDown = document.getElementById("capo-down");
+  capoDown.addEventListener("click", function () {
+    var capoSelect = document.getElementById("capo-select");
+    var novoValue = (parseInt(capoSelect.value) - 1);
+    if (novoValue >= 0) {
+      capoSelect.value = novoValue;
+
+      var changeEvent = new Event('change');
+      document.getElementById("capo-select").dispatchEvent(changeEvent);
+    }
+  });
+
+  var capoUp = document.getElementById("capo-up");
+  capoUp.addEventListener("click", function () {
+    var capoSelect = document.getElementById("capo-select");
+    var novoValue = (parseInt(capoSelect.value) + 1);
+    if (novoValue <= 12) {
+      capoSelect.value = novoValue;
+
+      var changeEvent = new Event('change');
+      document.getElementById("capo-select").dispatchEvent(changeEvent);
+    }
+  });
+
   applyChanges();
 });
