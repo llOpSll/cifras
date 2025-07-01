@@ -34,7 +34,7 @@ $html = parseCifraText($data['body']);
   :root {
     --primary-color: rgb(184, 38, 94);
     --primary-color-pestana: rgba(184, 38, 94, .8);
-    --meta: rgb(127, 140, 170);
+    --meta: rgb(103, 113, 136);
   }
 
   html,
@@ -129,7 +129,7 @@ $html = parseCifraText($data['body']);
   .metadata {
     font-size: 12px;
     color: var(--meta);
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     letter-spacing: 1.1px;
   }
 
@@ -151,7 +151,7 @@ $html = parseCifraText($data['body']);
   }
 
   .artistaSubTitle {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .chord-diagram {
@@ -208,13 +208,17 @@ $html = parseCifraText($data['body']);
     fill: var(--meta);
     text-anchor: end;
   }
+
+  .card svg line {
+    stroke: var(--meta) !important;
+  }
 </style>
 
 <main class="container">
   <div class="metadata">
-    <span class="meta-info"><strong>Tom:</strong> <span id="meta-tom"><?= $info['tom'] ?></span></span>
-    <span class="meta-info"><strong>BPM:</strong> <?= $info['bpm'] ?></span>
-    <span class="meta-info"><strong>Afinação:</strong> <?= $info['afinacao'] ?></span>
+    <span class="meta-info"><strong>TOM:</strong> <span id="meta-tom"><?= $info['tom'] ?></span></span> •
+    <span class="meta-info"><strong>BPM:</strong> <?= $info['bpm'] ?></span> •
+    <span class="meta-info"><strong>AFINAÇÃO:</strong> <?= $info['afinacao'] ?></span>
   </div>
 
   <h1 class="musicTitle"><?= str_replace(": ", "", $info['titulo']) ?></h1>
@@ -224,7 +228,10 @@ $html = parseCifraText($data['body']);
 
   <div class="transpose-controls">
     <div class="transpose-buttons">
-      <span id="current-transpose_">½ Tom</span>
+      <span id="current-transpose_">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-guitar text-blue-600" style="color: rgb(127, 140, 170);"><path d="m11.9 12.1 4.514-4.514"></path><path d="M20.1 2.3a1 1 0 0 0-1.4 0l-1.114 1.114A2 2 0 0 0 17 4.828v1.344a2 2 0 0 1-.586 1.414A2 2 0 0 1 17.828 7h1.344a2 2 0 0 0 1.414-.586L21.7 5.3a1 1 0 0 0 0-1.4z"></path><path d="m6 16 2 2"></path><path d="M8.2 9.9C8.7 8.8 9.8 8 11 8c2.8 0 5 2.2 5 5 0 1.2-.8 2.3-1.9 2.8l-.9.4A2 2 0 0 0 12 18a4 4 0 0 1-4 4c-3.3 0-6-2.7-6-6a4 4 0 0 1 4-4 2 2 0 0 0 1.8-1.2z"></path><circle cx="11.5" cy="12.5" r=".5" fill="currentColor"></circle></svg> 
+        ½ Tom
+      </span>
       <button id="transpose-down">-</button>
       <span id="current-transpose" hidden>0 semitons</span>
       <button id="transpose-up">+</button>
@@ -249,7 +256,7 @@ $html = parseCifraText($data['body']);
     <div id="font-controls">
       <button id="font-decrease">A-</button>
       <button id="font-increase">A+</button>
-      <button id="fullscreen-toggle">⛶</button>
+      <button id="fullscreen-toggle">Fullscreen</button>
     </div>
   </div>
 
