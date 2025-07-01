@@ -38,6 +38,21 @@ function generateHeader($pageData = [])
     <meta name="twitter:description" content="<?php echo htmlspecialchars($pageData['description']); ?>">
     <meta name="twitter:image" content="<?php echo htmlspecialchars($pageData['og_image']); ?>">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/style.css">
+
+    <link rel="manifest" href="<?php echo BASE_URL; ?>manifest.json">
+
+
+    <!-- For iOS Home Screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Cifras APP">
+    <link rel="apple-touch-icon" href="<?php echo BASE_URL; ?>img/icons/icon-192.png">
+
+    <!-- Optional Splash Screen (para iOS antigo) -->
+    <link rel="apple-touch-startup-image" href="<?php echo BASE_URL; ?>img/icons/splash.png">
+
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
 
   <body>
@@ -117,6 +132,6 @@ function route($url)
 // Captura a URL atual
 $current_url = $_SERVER['REQUEST_URI'];
 route($current_url);
-?>
+  ?>
 
-<footer>© 2025 CifrasApp · Feito com amor 🎸</footer>
+  <footer>© 2025 CifrasApp · Feito com amor 🎸</footer>

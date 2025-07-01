@@ -13,7 +13,7 @@ $param1 = urldecode($url_params[0]);
 
 include(ROOT_URL . '/includes/functions.php');
 
-$cifra = file_get_contents(ROOT_URL . "/cifras/".$param1);
+$cifra = file_get_contents(ROOT_URL . "/cifras/" . $param1);
 $data = extractCifraMetadata($cifra);
 $info = $data['metadata'];
 $html = parseCifraText($data['body']);
@@ -75,46 +75,48 @@ $html = parseCifraText($data['body']);
       <button id="transpose-reset" title="Reset">Reset</button>
     </div>
 
-    <label for="capo-select" class="capo-select"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-        stroke-linejoin="round" class="lucide lucide-hash text-blue-500" style="color: rgb(127, 140, 170);">
-        <line x1="4" x2="20" y1="9" y2="9"></line>
-        <line x1="4" x2="20" y1="15" y2="15"></line>
-        <line x1="10" x2="8" y1="3" y2="21"></line>
-        <line x1="16" x2="14" y1="3" y2="21"></line>
-      </svg>
-      <span class="label">CAPOTRASTE</span>:
-    </label>
-    <button id="capo-down"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-arrow-left">
-        <path d="m12 19-7-7 7-7"></path>
-        <path d="M19 12H5"></path>
-      </svg></button>
-    <select id="capo-select">
-      <option value="0">Sem Capotraste</option>
-      <?php
-      for ($i = 1; $i < 13; $i++) {
-        if ($info['capo'] == $i) {
-          $sel = 'selected';
-        } else {
-          $sel = '';
+    <div style="display: inline-block; width: 100%;">
+      <label for="capo-select" class="capo-select"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" class="lucide lucide-hash text-blue-500" style="color: rgb(127, 140, 170);">
+          <line x1="4" x2="20" y1="9" y2="9"></line>
+          <line x1="4" x2="20" y1="15" y2="15"></line>
+          <line x1="10" x2="8" y1="3" y2="21"></line>
+          <line x1="16" x2="14" y1="3" y2="21"></line>
+        </svg>
+        <span class="label">CAPOTRASTE</span>:
+      </label>
+      <button id="capo-down"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-arrow-left">
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg></button>
+      <select id="capo-select" disabled>
+        <option value="0">Sem Capotraste</option>
+        <?php
+        for ($i = 1; $i < 13; $i++) {
+          if ($info['capo'] == $i) {
+            $sel = 'selected';
+          } else {
+            $sel = '';
+          }
+          echo '<option value="' . $i . '" ' . $sel . '>' . $i . 'ª Casa</option>';
         }
-        echo '<option value="' . $i . '" ' . $sel . '>' . $i . 'ª Casa</option>';
-      }
-      ?>
-    </select>
-    <button id="capo-up"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-arrow-right">
-        <path d="M5 12h14"></path>
-        <path d="m12 5 7 7-7 7"></path>
-      </svg></button>
+        ?>
+      </select>
+      <button id="capo-up"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-arrow-right">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg></button>
 
-    <div id="font-controls">
-      <button id="font-increase">A+</button>
-      <button id="font-decrease">A-</button>
-      <button id="fullscreen-toggle">Tela Cheia</button>
+      <div id="font-controls">
+        <button id="font-increase">A+</button>
+        <button id="font-decrease">A-</button>
+        <button id="fullscreen-toggle">Tela Cheia</button>
+      </div>
     </div>
   </div>
 

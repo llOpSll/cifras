@@ -21,6 +21,8 @@ generateHeader($pageData);
 
 <main class="container" style="background: transparent; box-shadow: 0 0 0 0 rgba(0,0,0,0); text-align: center;">
   <h1>Lista de Cifras</h1>
+  <input type="search" name="q" id="q" placeholder="Pesquisar">
+
   <?php
   $arrFiles = array();
   $handle = opendir(__DIR__ . '/../cifras/');
@@ -40,13 +42,13 @@ generateHeader($pageData);
 
   sort($arrFilesNews);
   echo '<div class="cifras">';
-    foreach ($arrFilesNews as $file) {
-      echo '<a href="'.BASE_URL.'ver/'.$file.'">';
-        echo '<div class="cifraFile">';
-          echo '<h4 style="font-weight: 500">'.substr($file, 0, -4).'</h4>';
-        echo '</div>';
-      echo '</a>';
-    }
+  foreach ($arrFilesNews as $file) {
+    echo '<a href="' . BASE_URL . 'ver/' . $file . '">';
+    echo '<div class="cifraFile">';
+    echo '<h4 style="font-weight: 500">' . substr($file, 0, -4) . '</h4>';
+    echo '</div>';
+    echo '</a>';
+  }
   echo '</div>';
   ?>
 </main>
