@@ -110,25 +110,32 @@ function updateChordDictionary() {
     return;
   }
 
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'http://192.168.0.70/cifras/includes/chord-diagrams.php', true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      try {
-        var data = JSON.parse(xhr.responseText);
-        if (data && data.html) {
-          container.innerHTML = data.html;
-        } else {
-          container.innerHTML = '<p>Erro ao carregar acordes.</p>';
+  container.innerHTML = '';
+
+  for (var i = 0; i < chords.length; i++) {
+    (function (chord) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'http://192.168.0.70/cifras/pages/acorde.php?chord=' + encodeURIComponent(chord), true);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            try {
+              // Append the new content without overwriting previous
+              container.innerHTML += xhr.responseText;
+            } catch (e) {
+              container.innerHTML += '<p>Erro ao interpretar resposta.</p>';
+            }
+          } else {
+            container.innerHTML += '<p>Erro ao carregar acorde: ' + chord + '</p>';
+          }
         }
-      } catch (e) {
-        container.innerHTML = '<p>Erro ao interpretar resposta.</p>';
-      }
-    }
-  };
-  xhr.send(JSON.stringify(chords));
+      };
+      xhr.send(null); // GET não envia corpo
+    })(chords[i]);
+  }
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
   var userTranspose = 0;

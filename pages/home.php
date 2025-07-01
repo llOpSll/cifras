@@ -9,7 +9,7 @@ generateHeader($pageData);
 
 include(ROOT_URL . '/includes/functions.php');
 
-$cifra = file_get_contents(ROOT_URL . "/cifras/Só Tu És Santo - Uma Coisa - Deixa Queimar - Quando Ele Vem (Pot-Pourri).txt");
+$cifra = file_get_contents(ROOT_URL . "/cifras/É Tudo Sobre Você - Morada.txt");
 $data = extractCifraMetadata($cifra);
 $info = $data['metadata'];
 $html = parseCifraText($data['body']);
@@ -33,6 +33,8 @@ $html = parseCifraText($data['body']);
 
   :root {
     --primary-color: rgb(184, 38, 94);
+    --primary-color-pestana: rgba(184, 38, 94, .8);
+    --meta: rgb(127, 140, 170);
   }
 
   html,
@@ -43,7 +45,7 @@ $html = parseCifraText($data['body']);
     width: 100%;
     height: auto;
     background: #f1f2f5;
-    color: #121214;
+    color: var(--meta);
   }
 
   main {
@@ -79,7 +81,7 @@ $html = parseCifraText($data['body']);
   }
 
   .chord {
-    color: rgb(184, 38, 94);
+    color: var(--primary-color);
     font-weight: bolder;
     position: relative;
     background: #f9f9f9;
@@ -90,7 +92,7 @@ $html = parseCifraText($data['body']);
 
   .fret,
   #meta-tom {
-    color: rgb(184, 38, 94);
+    color: var(--primary-color);
     font-weight: bolder;
     position: relative;
   }
@@ -125,12 +127,27 @@ $html = parseCifraText($data['body']);
   }
 
   .metadata {
-    font-size: 13px;
-    color: rgb(127, 140, 170);
+    font-size: 12px;
+    color: var(--meta);
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+  }
+
+  .meta-info {
+    background: rgba(241, 242, 245, 0.3);
+    padding: 2px 5px;
+    border-radius: 6px;
+    margin: 2px;
+  }
+
+  .meta-info:first-child {
+    margin-left: 0px;
   }
 
   .musicTitle {
     font-size: 28px;
+    margin-top: 10px;
+    margin-bottom: -10px;
   }
 
   .artistaSubTitle {
@@ -156,14 +173,48 @@ $html = parseCifraText($data['body']);
   }
 
   .chord-diagram svg circle {
-    fill: rgb(184, 38, 94);
+    fill: var(--primary-color);
+  }
+
+  .svg {
+    width: 100%;
+    height: auto;
+    max-width: 80px;
+    float: left;
+  }
+
+  .title {
+    font: 600 16px sans-serif;
+    fill: var(--meta);
+    text-anchor: middle;
+  }
+
+  .dot {
+    fill: var(--primary-color);
+  }
+
+  .barre {
+    fill: var(--primary-color-pestana);
+  }
+
+  .ox {
+    font: 500 9px sans-serif;
+    fill: var(--meta);
+    text-anchor: middle;
+  }
+
+  .base {
+    font: 400 12px sans-serif;
+    fill: var(--meta);
+    text-anchor: end;
   }
 </style>
 
 <main class="container">
   <div class="metadata">
-    <strong>Tom:</strong> <span id="meta-tom"><?= $info['tom'] ?></span> | <strong>BPM:</strong> <?= $info['bpm'] ?> |
-    <strong>Afinação:</strong> <?= $info['afinacao'] ?>
+    <span class="meta-info"><strong>Tom:</strong> <span id="meta-tom"><?= $info['tom'] ?></span></span>
+    <span class="meta-info"><strong>BPM:</strong> <?= $info['bpm'] ?></span>
+    <span class="meta-info"><strong>Afinação:</strong> <?= $info['afinacao'] ?></span>
   </div>
 
   <h1 class="musicTitle"><?= str_replace(": ", "", $info['titulo']) ?></h1>
@@ -190,7 +241,7 @@ $html = parseCifraText($data['body']);
         } else {
           $sel = '';
         }
-        echo '<option value="' . $i . '" '.$sel.'>' . $i . 'ª Casa</option>';
+        echo '<option value="' . $i . '" ' . $sel . '>' . $i . 'ª Casa</option>';
       }
       ?>
     </select>
@@ -211,7 +262,7 @@ $html = parseCifraText($data['body']);
   </pre>
 
   <div id="chord-dictionary" style="margin-top: 2em; padding-top: 1em; border-top: 1px solid #ccc;">
-    <h2>Dicionário de Acordes</h2>
+    <!-- <h2>Dicionário de Acordes</h2> -->
     <div id="dictionary-content" style="display: flex; flex-wrap: wrap; gap: 12px;"></div>
   </div>
 
